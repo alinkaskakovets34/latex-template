@@ -1,101 +1,109 @@
 \customSection[sec:analysis]{Аналіз предметної області}{0em}
 
-\customSubSection[sec:analysis_two_level_section]{Оформлення коду}{0em}
+\customSubSection[sec:analysis_two_level_section]{Оформлення програмного коду}{0em}
 
-Оформлення коду є важливим аспектом при написанні технічної документації. Нижче наведено приклади оформлення коду для різних мов програмування.
+Оформлення коду є важливим аспектом при написанні технічної документації. Нижче наведено приклади реалізації клієнтської та серверної частин системи управління СТО.
 
 % ----------------------
-% Example 1: TypeScript
+% HTML Structure
 % ----------------------
-TypeScript:
-\begin{lstlisting}[style=nocodeframe, language=TypeScript]
-interface User {
-    name: string;
-    age: number;
-}
-
-const user: User = {
-    name: "Ivan",
-    age: 17
-};
-
-function greet(u: User): void {
-    console.log(`Hello, ${u.name}`);
-}
-
-greet(user);
+Фрагмент HTML-коду форми для додавання нової заявки адміністратором:
+\begin{lstlisting}[style=nocodeframe, language=HTML]
+<div class="form-grid">
+    <input id="client" type="text" placeholder="ПІБ Клієнта">
+    <input id="car" type="text" placeholder="Авто">
+    <select id="mechanic">
+        <option value="Майстер Іван">Майстер Іван</option>
+        <option value="Майстер Володимир">Майстер Володимир</option>
+    </select>
+    <input id="labor_cost" type="number" placeholder="Робота (грн)">
+    <input id="parts_cost" type="number" placeholder="Запчастини (грн)">
+    <button class="btn-save" onclick="addOrder()">Зберегти</button>
+</div>
 \end{lstlisting}
 
 % ----------------------
-% Example 2: Arduino C++
+% Python Backend
 % ----------------------
-ArduinoCpp:
-\begin{lstlisting}[style=nocodeframe, language=ArduinoCpp]
-#include <Arduino.h>
+Реалізація моделі даних та API-запиту на мові Python (FastAPI):
+\begin{lstlisting}[style=nocodeframe, language=Python]
+class Order(Base):
+    __tablename__ = "orders"
+    id = Column(Integer, primary_key=True, index=True)
+    client_name = Column(String)
+    car_info = Column(String)
+    labor_cost = Column(Float, default=0.0)
+    parts_cost = Column(Float, default=0.0)
+    status = Column(String, default="В роботі")
 
-void setup() {
-    Serial.begin(9600);
-}
-
-void loop() {
-    Serial.println("Hello Arduino");
-}
+@app.post("/add-order")
+async def add_order(order_data: OrderCreate, db: Session = Depends(get_db)):
+    new_order = Order(**order_data.dict())
+    db.add(new_order)
+    db.commit()
+    return {"status": "success"}
 \end{lstlisting}
 
-Lorem Ipsum — це стандартний заповнювач тексту в поліграфії та верстці, який використовується з 1500-х років. Він допомагає демонструвати макети без використання реального змісту.
+Система забезпечує автоматизацію роботи адміністратора, дозволяючи вести централізований облік клієнтів та фінансових витрат на ремонт автомобілів.
 
 \customSubSection[sec:analysis_two_level_section]{Оформлення рисунків}{1em}
 
-Оформлення рисунків є важливим аспектом при написанні технічної документації. Нижче наведено приклад оформлення рисунка.
+Для візуалізації роботи системи наведено приклад інтерфейсу панелі керування.
 
-\setfigure[fig:intro_example2]{0.8\textwidth}{assets/img}{Тестовий рисунок}
+\setfigure[fig:dashboard_view]{0.8\textwidth}{assets/img}{Інтерфейс панелі керування СТО}
 
-На \textbf{рис.~\ref{fig:intro_example2}} показано приклад зображення, яке ілюструє відповідний приклад.
+На \textbf{рис.~\ref{fig:dashboard_view}} показано головний екран системи, де адміністратор може керувати списком замовлень та змінювати їх статуси.
 
 \customSubSection[sec:analysis_third_level_section]{Оформлення таблиць}{1em}
+
+Для аналізу структури збережених даних нижче наведено опис основних полів бази даних.
 
 \begin{spacing}{1.3}
     \noindent
     \begin{xltabular}{\textwidth}{| c | >{\raggedright\arraybackslash}X | c |}
-        \caption{Список дисциплін} \label{tab:disciplines} \\
+        \caption{Структура таблиці orders у БД SQLite} \label{tab:db_orders} \\
         \hline
-        \textbf{№} & \textbf{Назва дисципліни} & \textbf{К-ть кредитів ЄКТС} \\ \hline
+        \textbf{№} & \textbf{Назва поля} & \textbf{Тип даних} \\ \hline
         \endfirsthead
 
         \multicolumn{3}{r}{\textit{}} \\ \hline
-        \textbf{№} & \textbf{Назва дисципліни} & \textbf{К-ть кредитів ЄКТС} \\ \hline
+        \textbf{№} & \textbf{Назва поля} & \textbf{Тип даних} \\ \hline
         \endhead
 
-        1 & Методи та засоби інженерії програмного забезпечення & 220 \\ \hline
-        1 & Методи та засоби інженерії програмного забезпечення & 220 \\ \hline
-        1 & Методи та засоби інженерії програмного забезпечення & 220 \\ \hline
-        1 & Методи та засоби інженерії програмного забезпечення & 220 \\ \hline
-        1 & Методи та засоби інженерії програмного забезпечення & 220 \\ \hline
+        1 & id & INTEGER (PK) \\ \hline
+        2 & client\_name & TEXT \\ \hline
+        3 & car\_info & TEXT \\ \hline
+        4 & labor\_cost & REAL (FLOAT) \\ \hline
+        5 & parts\_cost & REAL (FLOAT) \\ \hline
+        6 & status & VARCHAR \\ \hline
     \end{xltabular}
 \end{spacing}
 
 \customSubSection[sec:analysis_third_level_section]{Міждокументні посилання}{1em}
 
-Як зазначено в підрозділі \ref{sec:analysis_two_level_section}, аналіз предметної області є критично важливим.
+Як зазначено в підрозділі \ref{sec:analysis_two_level_section}, аналіз предметної області та вибір стеку технологій (Python/FastAPI) є критично важливими для швидкодії системи.
 
-На \textbf{рис.~\ref{fig:intro_example2}} продемонстровано приклад зображення, яке ілюструє відповідний приклад.
+На \textbf{рис.~\ref{fig:dashboard_view}} продемонстровано реалізацію веб-інтерфейсу, що взаємодіє з сервером через асинхронні запити.
 
-Тема Arduino розглядається детально у багатьох джерелах \citecustom{1}, \citecustom{3}, а практичні проекти описані у \citecustom{4}.
+Використання FastAPI для побудови сучасних API детально розглядається у джерелах \citecustom{1}, \citecustom{3}.
 
-Дані дисциплін наведені у \tabref{tab:disciplines}.
+Дані про структуру таблиць бази даних наведені у \tabref{tab:db_orders}.
 
 \begin{spacing}{1.3}
     \noindent
     \begin{xltabular}{\textwidth}{| c | >{\raggedright\arraybackslash}X | c |}
-        \caption{Ще одна тестова таблиця} \label{tab:test_table} \\
+        \caption{Перелік статусів замовлень} \label{tab:statuses} \\
         \hline
-        \textbf{№} & \textbf{Тест} & \textbf{Тест} \\ \hline
+        \textbf{№} & \textbf{Статус} & \textbf{Опис} \\ \hline
         \endfirsthead
 
         \multicolumn{3}{r}{\textit{}} \\ \hline
-        \textbf{№} & \textbf{Тест} & \textbf{Тест} \\ \hline
+        \textbf{№} & \textbf{Статус} & \textbf{Опис} \\ \hline
         \endhead
 
-        1 & Методи та засоби інженерії програмного забезпечення & 220 \\ \hline
+        1 & В роботі & Замовлення щойно створене або виконується \\ \hline
+        2 & Очікує запчастин & Необхідна закупівля деталей \\ \hline
+        3 & Готово & Ремонт завершено \\ \hline
+        4 & Видано & Автомобіль повернуто клієнту \\ \hline
     \end{xltabular}
 \end{spacing}
