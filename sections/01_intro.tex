@@ -1,6 +1,30 @@
 \uniterablesection{Вступ}
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Даний проект присвячений розробці автоматизованого робочого місця (АРМ) адміністратора станції технічного обслуговування. Впровадження такої системи дозволяє централізувати управління замовленнями, забезпечити прозорий облік ресурсів та мінімізувати помилки при оформленні документації.
 
+\subsection{Постановка проблеми}
+Основним викликом для власника або адміністратора СТО є необхідність одночасного контролю великої кількості параметрів: від реєстрації клієнта до фінального розрахунку вартості. Без спеціалізованого програмного забезпечення адміністратору важко:
+\begin{itemize}
+    \item Вести єдиний реєстр замовлень без дублювання даних.
+    \item Оперативно відстежувати, який майстер вільний, а який завантажений.
+    \item Точно розраховувати суму до оплати з урахуванням використаних запчастин зі складу.
+\end{itemize}
 
+\subsection{Мета та функціонал системи}
+Метою роботи є створення зручного інтерфейсу для адміністратора, який забезпечує повний цикл супроводу клієнта. 
+
+Система дозволяє адміністратору виконувати наступні дії:
+\begin{itemize}
+    \item \textbf{Управління заявками:} Створення нових карток ремонту з описом несправностей та даними автомобіля.
+    \item \textbf{Диспетчеризація:} Призначення конкретного виконавця (майстра) на кожне замовлення.
+    \item \textbf{Складський облік:} Списання запчастин, використаних у процесі ремонту, безпосередньо через форму замовлення.
+    \item \textbf{Фінансовий контроль:} Автоматичне формування підсумкової вартості замовлення за формулою: $V_{total} = V_{work} + V_{parts}$
+\end{itemize}
+
+\subsection{Об'єктно-реляційна модель}
+Для реалізації функцій адміністратора база даних проекту містить взаємопов'язані таблиці:
+\begin{itemize}
+    \item \textbf{Клієнти та Автомобілі} — база контактів та об'єктів ремонту.
+    \item \textbf{Співробітники} — реєстр майстрів, якими оперує адміністратор.
+    \item \textbf{Замовлення} — центральна таблиця, що об'єднує клієнта, майстра та статус виконання.
+\end{itemize}
